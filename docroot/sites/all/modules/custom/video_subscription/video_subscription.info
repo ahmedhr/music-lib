@@ -1,0 +1,5 @@
+name = Video subscription
+description = "Allows user to subscribe to a video series"
+package = Music library
+version = 7.x-1.0
+core = 7.x

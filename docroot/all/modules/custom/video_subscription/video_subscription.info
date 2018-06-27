@@ -1,0 +1,4 @@
+name = Video subscription
+description = "Allows user to subscribe to a video series"
+package = Other
+core = 7.x

@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Video subscription Module file
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function video_subscription_menu() {
+  $items['subscribe/%'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'Subscription',
+    'access callback' => 'user_is_logged_in',
+    'page callback' => 'video_subscription',
+    'page arguments' => array(1),
+    'file' => 'video_subscription.inc',
+    'file path' => drupal_get_path('module', 'video_subscription') . '/includes',
+  );
+  $items['video-serie/%'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => 'Video Series',
+    'access callback' => 'user_is_logged_in',
+    'page callback' => 'display_video_serie',
+    'page arguments' => array(1),
+    'file' => 'video_series.inc',
+    'file path' => drupal_get_path('module', 'video_subscription') . '/includes',
+  );
+  return $items;
+}
+
+function get_subscription_id($video_series_id, $user_id) {
+  $query = db_select('video_subscription', 'vs');
+  $query->fields('vs');
+  $query->condition('uid', $user_id);
+  $query->condition('video_series_entity_id', $video_series_id);
+  $subscription_ids = $query->execute()->fetch();
+  return $subscription_ids;
+}
+
+function video_subscription_node_presave($node){
+  if($node->type == 'album' && $node->field_archive['und'][0]['value']){
+    $music_tracks = $node->field_music_tracks['und'];
+    foreach($music_tracks as $key => $track_id){
+      $music_track_node = node_load($track_id['target_id']);
+      $music_track_node->field_archive['und'][0]['value'] = 1;
+      node_save($music_track_node);
+    }
+  }  
+}
