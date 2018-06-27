@@ -22,7 +22,7 @@ function video_subscription_menu() {
     'type' => MENU_NORMAL_ITEM,
     'title' => 'Video Series',
     'access callback' => 'user_is_logged_in',
-    'page callback' => 'display_video_serie',
+    'page callback' => 'display_video_series',
     'page arguments' => array(1),
     'file' => 'video_series.inc',
     'file path' => drupal_get_path('module', 'video_subscription') . '/includes',
@@ -30,6 +30,12 @@ function video_subscription_menu() {
   return $items;
 }
 
+/**
+ * To get subscription id.
+ * @param type $video_series_id
+ * @param type $user_id
+ * @return subscription id
+ */
 function get_subscription_id($video_series_id, $user_id) {
   $query = db_select('video_subscription', 'vs');
   $query->fields('vs');
@@ -39,6 +45,9 @@ function get_subscription_id($video_series_id, $user_id) {
   return $subscription_ids;
 }
 
+/*
+ * hook_node_presave.
+ */
 function video_subscription_node_presave($node){
   if($node->type == 'album' && $node->field_archive['und'][0]['value']){
     $music_tracks = $node->field_music_tracks['und'];

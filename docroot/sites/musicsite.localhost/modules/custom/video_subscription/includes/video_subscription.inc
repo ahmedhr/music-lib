@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * page callback to subscribe to a video series.
+ * @param type $video_series_id
+ */
 function video_subscription($video_series_id) {
   $user_id = $GLOBALS['user']->uid;
   $subscription_id = get_subscription_id($video_series_id, $user_id);
@@ -14,6 +18,11 @@ function video_subscription($video_series_id) {
   drupal_goto();
 }
 
+/**
+ * to set subscription of a user.
+ * @param type $video_series_id
+ * @param type $user_id
+ */
 function set_subscription_for_user($video_series_id, $user_id) {
   $query = db_insert('video_subscription');
   $fields = array(
